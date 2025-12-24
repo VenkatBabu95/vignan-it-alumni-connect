@@ -17,6 +17,8 @@ interface Post {
 const Social = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchPosts();
@@ -24,11 +26,32 @@ const Social = () => {
 
   const fetchPosts = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const response = await fetch('/api/posts');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       setPosts(data);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      setError('Failed to load posts. Please check your connection.');
+      // Set some sample data for demo
+      setPosts([
+        {
+          _id: "1",
+          author: "Demo User",
+          avatar: "DU",
+          content: "Welcome to the alumni social network! This is a demo post.",
+          timestamp: new Date().toISOString(),
+          likes: 5,
+          likedBy: [],
+          comments: []
+        }
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -46,29 +69,37 @@ const Social = () => {
             content: newPost,
           }),
         });
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const post = await response.json();
         setNewPost("");
         // Refresh posts to show the new one
         fetchPosts();
       } catch (error) {
         console.error('Error creating post:', error);
+        setError('Failed to create post. Please try again.');
       }
     }
   };
 
   const handleLike = async (postId: string) => {
     try {
-      await fetch(`/api/posts/${postId}/like`, {
+      const response = await fetch(`/api/posts/${postId}/like`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ userId: "user1" }), // In real app, get from user auth
       });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       // Refresh posts to show updated likes
       fetchPosts();
     } catch (error) {
       console.error('Error liking post:', error);
+      setError('Failed to like post. Please try again.');
     }
   };
 
@@ -89,6 +120,12 @@ const Social = () => {
       <Navbar />
       <main className="max-w-2xl mx-auto px-4 py-8">
         <h1 className="text-3xl font-heading font-bold text-foreground mb-8">Alumni Network</h1>
+
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+            <p className="text-red-800">{error}</p>
+          </div>
+        )}
 
         {/* Create Post */}
         <div className="bg-card rounded-2xl p-6 mb-8 border border-border">
@@ -117,44 +154,50 @@ const Social = () => {
         </div>
 
         {/* Posts Feed */}
-        <div className="space-y-6">
-          {posts.map((post) => (
-            <div key={post._id} className="bg-card rounded-2xl p-6 border border-border">
-              <div className="flex gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm font-bold text-primary-foreground">{post.avatar}</span>
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-semibold text-foreground">{post.author}</h3>
-                    <span className="text-sm text-muted-foreground">•</span>
-                    <span className="text-sm text-muted-foreground">{formatTimestamp(post.timestamp)}</span>
+        {loading ? (
+          <div className="text-center py-8">
+            <p className="text-muted-foreground">Loading posts...</p>
+          </div>
+        ) : (
+          <div className="space-y-6">
+            {posts.map((post) => (
+              <div key={post._id} className="bg-card rounded-2xl p-6 border border-border">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
+                    <span className="text-sm font-bold text-primary-foreground">{post.avatar}</span>
                   </div>
-                  <p className="text-foreground mb-4">{post.content}</p>
-                  <div className="flex items-center gap-6">
-                    <button
-                      onClick={() => handleLike(post._id)}
-                      className={`flex items-center gap-2 text-sm transition-colors ${
-                        post.likedBy.includes("user1") ? "text-red-500" : "text-muted-foreground hover:text-red-500"
-                      }`}
-                    >
-                      <Heart className={`w-4 h-4 ${post.likedBy.includes("user1") ? "fill-current" : ""}`} />
-                      {post.likes}
-                    </button>
-                    <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <MessageCircle className="w-4 h-4" />
-                      {post.comments.length}
-                    </button>
-                    <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                      <Share className="w-4 h-4" />
-                      Share
-                    </button>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h3 className="font-semibold text-foreground">{post.author}</h3>
+                      <span className="text-sm text-muted-foreground">•</span>
+                      <span className="text-sm text-muted-foreground">{formatTimestamp(post.timestamp)}</span>
+                    </div>
+                    <p className="text-foreground mb-4">{post.content}</p>
+                    <div className="flex items-center gap-6">
+                      <button
+                        onClick={() => handleLike(post._id)}
+                        className={`flex items-center gap-2 text-sm transition-colors ${
+                          post.likedBy.includes("user1") ? "text-red-500" : "text-muted-foreground hover:text-red-500"
+                        }`}
+                      >
+                        <Heart className={`w-4 h-4 ${post.likedBy.includes("user1") ? "fill-current" : ""}`} />
+                        {post.likes}
+                      </button>
+                      <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                        <MessageCircle className="w-4 h-4" />
+                        {post.comments.length}
+                      </button>
+                      <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+                        <Share className="w-4 h-4" />
+                        Share
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </main>
       <Footer />
     </div>
