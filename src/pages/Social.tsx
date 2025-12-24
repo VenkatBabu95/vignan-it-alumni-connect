@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Heart, MessageCircle, Share, User } from "lucide-react";
-import { io } from "socket.io-client";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -18,28 +17,9 @@ interface Post {
 const Social = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [newPost, setNewPost] = useState("");
-  const [socket, setSocket] = useState<any>(null);
 
   useEffect(() => {
-    // Connect to socket
-    const newSocket = io(window.location.origin);
-    setSocket(newSocket);
-
-    // Fetch initial posts
     fetchPosts();
-
-    // Listen for real-time updates
-    newSocket.on('newPost', (post: Post) => {
-      setPosts(prev => [post, ...prev]);
-    });
-
-    newSocket.on('updatePost', (updatedPost: Post) => {
-      setPosts(prev => prev.map(post => post._id === updatedPost._id ? updatedPost : post));
-    });
-
-    return () => {
-      newSocket.disconnect();
-    };
   }, []);
 
   const fetchPosts = async () => {
@@ -68,7 +48,8 @@ const Social = () => {
         });
         const post = await response.json();
         setNewPost("");
-        // Post will be added via socket
+        // Refresh posts to show the new one
+        fetchPosts();
       } catch (error) {
         console.error('Error creating post:', error);
       }
@@ -84,7 +65,8 @@ const Social = () => {
         },
         body: JSON.stringify({ userId: "user1" }), // In real app, get from user auth
       });
-      // Update will come via socket
+      // Refresh posts to show updated likes
+      fetchPosts();
     } catch (error) {
       console.error('Error liking post:', error);
     }
