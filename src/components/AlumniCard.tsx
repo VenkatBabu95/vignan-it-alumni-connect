@@ -38,26 +38,16 @@ const AlumniCard = ({ alumni, index }: AlumniCardProps) => {
 
           {/* Details */}
           <div className="mt-3 space-y-2">
-            {alumni.email && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
-                <Mail className="w-3.5 h-3.5 flex-shrink-0" />
-                <span className="truncate">{alumni.email}</span>
-              </div>
-            )}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors">
+              <Mail className="w-3.5 h-3.5 flex-shrink-0" />
+              <span className="truncate">{alumni.email || ""}</span>
+            </div>
             
-            {alumni.phone && (
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Phone className="w-3.5 h-3.5 flex-shrink-0" />
-                <span>{alumni.phone}</span>
-              </div>
-            )}
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
+              <Phone className="w-3.5 h-3.5 flex-shrink-0" />
+              <span>{alumni.phone || ""}</span>
+            </div>
 
-            {alumni.cgpa && (
-              <div className="flex items-center gap-2 text-sm">
-                <Award className="w-3.5 h-3.5 flex-shrink-0 text-secondary" />
-                <span className="text-secondary font-medium">CGPA: {alumni.cgpa}</span>
-              </div>
-            )}
           </div>
         </div>
 
