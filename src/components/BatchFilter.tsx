@@ -13,7 +13,7 @@ const BatchFilter = ({ selectedBatch, onBatchChange }: BatchFilterProps) => {
         className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
           selectedBatch === "all"
             ? "bg-gradient-primary text-primary-foreground glow-purple"
-            : "glass text-muted-foreground hover:text-foreground hover:border-primary/50"
+            : "bg-muted text-muted-foreground hover:text-primary hover:bg-primary/10 border border-border"
         }`}
       >
         All Batches
@@ -25,7 +25,7 @@ const BatchFilter = ({ selectedBatch, onBatchChange }: BatchFilterProps) => {
           className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
             selectedBatch === batch
               ? "bg-gradient-primary text-primary-foreground glow-purple"
-              : "glass text-muted-foreground hover:text-foreground hover:border-primary/50"
+              : "bg-muted text-muted-foreground hover:text-primary hover:bg-primary/10 border border-border"
           }`}
         >
           Batch {batch}

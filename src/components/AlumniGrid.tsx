@@ -18,17 +18,8 @@ const AlumniGrid = () => {
     });
   }, [selectedBatch, searchQuery]);
 
-  const batchCounts = useMemo(() => {
-    return {
-      all: alumniData.length,
-      "2019": alumniData.filter(a => a.batch === "2019").length,
-      "2020": alumniData.filter(a => a.batch === "2020").length,
-      "2021": alumniData.filter(a => a.batch === "2021").length,
-    };
-  }, []);
-
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4 bg-background">
       <div className="max-w-7xl mx-auto">
         {/* Section header */}
         <div className="text-center mb-12">
@@ -49,7 +40,7 @@ const AlumniGrid = () => {
               placeholder="Search by name or roll number..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-4 rounded-xl glass border-0 text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              className="w-full pl-12 pr-4 py-4 rounded-xl bg-muted border border-border text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
             />
           </div>
         </div>
@@ -75,7 +66,7 @@ const AlumniGrid = () => {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="w-20 h-20 mx-auto mb-6 rounded-full glass flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 rounded-full bg-muted flex items-center justify-center">
               <Users className="w-10 h-10 text-muted-foreground" />
             </div>
             <h3 className="text-xl font-semibold text-foreground mb-2">No alumni found</h3>

@@ -2,7 +2,7 @@ import { GraduationCap } from "lucide-react";
 
 const Navbar = () => {
   return (
-    <nav className="sticky top-0 z-50 glass border-b border-border/50">
+    <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
