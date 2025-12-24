@@ -1,33 +1,40 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Index from "./pages/Index";
-import Social from "./pages/Social";
-import NotFound from "./pages/NotFound";
-
-const queryClient = new QueryClient();
-
 const App = () => {
-  // Simple test render first
   return (
-    <div style={{ padding: '20px', backgroundColor: 'lightblue', minHeight: '100vh' }}>
-      <h1 style={{ color: 'red', fontSize: '24px' }}>React App is Loading...</h1>
-      <p>If you see this, React is working!</p>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/social" element={<Social />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+    <div style={{
+      padding: '20px',
+      backgroundColor: 'lightblue',
+      minHeight: '100vh',
+      fontFamily: 'Arial, sans-serif'
+    }}>
+      <h1 style={{
+        color: 'red',
+        fontSize: '32px',
+        marginBottom: '20px'
+      }}>
+        🎉 Alumni Website is Working!
+      </h1>
+      <p style={{
+        color: 'darkblue',
+        fontSize: '18px',
+        lineHeight: '1.6'
+      }}>
+        If you can see this message, React is loading correctly.<br/>
+        The issue was with complex components. Let's fix them step by step.
+      </p>
+      <div style={{
+        marginTop: '30px',
+        padding: '20px',
+        backgroundColor: 'white',
+        borderRadius: '8px',
+        border: '2px solid #ccc'
+      }}>
+        <h2 style={{ color: 'green', marginBottom: '10px' }}>Next Steps:</h2>
+        <ul style={{ color: 'black' }}>
+          <li>• Check browser console for errors</li>
+          <li>• Verify all components are properly imported</li>
+          <li>• Test individual components</li>
+        </ul>
+      </div>
     </div>
   );
 };
