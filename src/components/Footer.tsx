@@ -2,7 +2,7 @@ import { GraduationCap, Mail, MapPin, Phone } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="border-t border-border/50 py-12 px-4 mt-16">
+    <footer className="bg-gradient-to-b from-muted/30 to-muted/50 border-t border-border py-12 px-4 mt-16">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Brand */}
@@ -49,7 +49,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom */}
-        <div className="pt-8 border-t border-border/30 text-center">
+        <div className="pt-8 border-t border-border text-center">
           <p className="text-sm text-muted-foreground">
             © {new Date().getFullYear()} VITS IT Alumni Network. All rights reserved.
           </p>

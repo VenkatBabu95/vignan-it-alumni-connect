@@ -16,7 +16,7 @@ const AlumniCard = ({ alumni, index }: AlumniCardProps) => {
 
   return (
     <div 
-      className="glass rounded-2xl p-6 hover:glow-purple transition-all duration-500 group animate-slide-up"
+      className="card-elevated rounded-2xl p-6 hover:glow-purple transition-all duration-500 group animate-slide-up"
       style={{ animationDelay: `${index * 0.05}s` }}
     >
       <div className="flex items-start gap-4">
@@ -54,8 +54,8 @@ const AlumniCard = ({ alumni, index }: AlumniCardProps) => {
 
             {alumni.cgpa && (
               <div className="flex items-center gap-2 text-sm">
-                <Award className="w-3.5 h-3.5 flex-shrink-0 text-accent" />
-                <span className="text-accent font-medium">CGPA: {alumni.cgpa}</span>
+                <Award className="w-3.5 h-3.5 flex-shrink-0 text-secondary" />
+                <span className="text-secondary font-medium">CGPA: {alumni.cgpa}</span>
               </div>
             )}
           </div>
@@ -63,7 +63,7 @@ const AlumniCard = ({ alumni, index }: AlumniCardProps) => {
 
         {/* Batch badge */}
         <div className="flex-shrink-0">
-          <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-primary/20 text-primary border border-primary/30">
+          <span className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-gradient-primary text-primary-foreground">
             {alumni.batch}
           </span>
         </div>
